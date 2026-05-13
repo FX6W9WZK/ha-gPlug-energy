@@ -23,7 +23,6 @@ from .const import (
     CONF_AUTO_ENERGY,
     DEFAULT_AUTO_CARD,
     DEFAULT_AUTO_ENERGY,
-    DOMAIN,
 )
 
 _LOGGER = logging.getLogger(__name__)
