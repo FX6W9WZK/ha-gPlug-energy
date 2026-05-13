@@ -40,9 +40,6 @@ CARD_PATH = Path(__file__).parent / "www" / "gplug-energy-card.js"
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up gPlug Energy from a config entry."""
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = entry.data
-
     # Check options (options override data)
     auto_card = entry.options.get(
         CONF_AUTO_CARD, entry.data.get(CONF_AUTO_CARD, DEFAULT_AUTO_CARD)
@@ -80,10 +77,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    if unload_ok:
-        hass.data[DOMAIN].pop(entry.entry_id, None)
-    return unload_ok
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
 
 async def async_update_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
@@ -115,57 +109,38 @@ async def _register_card(hass: HomeAssistant) -> None:
 
 
 async def _add_lovelace_resource(hass: HomeAssistant, url: str) -> None:
-    """Add or update a JS module in Lovelace resources (with version cache-bust)."""
-    storage_path = Path(hass.config.path(".storage")) / "lovelace_resources"
-
+    """Add or update a JS module in Lovelace resources via HA API."""
     try:
-        # Read existing resources
-        data = {"data": {"items": []}, "version": 1, "key": "lovelace_resources"}
-        if storage_path.exists():
-            raw = await hass.async_add_executor_job(storage_path.read_text)
-            data = json.loads(raw)
+        ll_data = hass.data.get("lovelace")
+        if ll_data is None or not hasattr(ll_data, "resources"):
+            _LOGGER.debug(
+                "Lovelace resources not available (YAML mode?). "
+                "Add manually: %s",
+                url,
+            )
+            return
 
-        items = data.get("data", {}).get("items", [])
+        resources = ll_data.resources
+        if not resources.loaded:
+            return
 
-        # Check if already registered (match on base URL without ?v=)
-        for item in items:
+        for item in resources.async_items():
             existing_url = item.get("url", "")
             if CARD_STATIC_URL in existing_url:
                 if existing_url == url:
                     _LOGGER.debug("gPlug card already registered with current version")
                     return
-                # Update version
-                item["url"] = url
-                data["data"]["items"] = items
-                content = json.dumps(data, indent=2)
-                await hass.async_add_executor_job(storage_path.write_text, content)
+                await resources.async_update_item(item["id"], {"url": url})
                 _LOGGER.info("gPlug card updated to %s", url)
                 return
 
-        # Not found – add new entry
-        existing_ids = [
-            int(item.get("id", "0"))
-            for item in items
-            if str(item.get("id", "")).isdigit()
-        ]
-        next_id = str(max(existing_ids, default=0) + 1)
+        await resources.async_create_item({"res_type": "module", "url": url})
+        _LOGGER.info("gPlug card registered in lovelace_resources: %s", url)
 
-        items.append({"id": next_id, "type": "module", "url": url})
-        data["data"]["items"] = items
-
-        content = json.dumps(data, indent=2)
-        await hass.async_add_executor_job(storage_path.write_text, content)
-
-        _LOGGER.info(
-            "gPlug card registered in lovelace_resources (id=%s, url=%s)",
-            next_id,
-            url,
-        )
-
-    except Exception as exc:
-        _LOGGER.warning("Could not register card in lovelace_resources: %s", exc)
-        _LOGGER.warning(
-            "Please add manually: Settings > Dashboards > Resources > "
+    except Exception:
+        _LOGGER.debug(
+            "Could not auto-register Lovelace resource. "
+            "Add manually: Settings > Dashboards > Resources > "
             "Add Resource > URL: %s > Type: JavaScript Module",
             url,
         )

@@ -23,6 +23,7 @@ from homeassistant.const import (
     UnitOfPower,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_time_interval
@@ -152,13 +153,15 @@ async def _setup_mqtt_sensors(
         if new_entities:
             async_add_entities(new_entities)
 
-    # Subscribe to the configured MQTT topic
-    await mqtt.async_subscribe(hass, topic, _message_received, qos=0)
+    unsub = await mqtt.async_subscribe(hass, topic, _message_received, qos=0)
+    config_entry.async_on_unload(unsub)
 
-    # Also subscribe to the stat topic variant (Tasmota sends on both)
     stat_topic = topic.replace("tele/", "stat/").replace("/SENSOR", "/STATUS10")
     if stat_topic != topic:
-        await mqtt.async_subscribe(hass, stat_topic, _message_received, qos=0)
+        unsub_stat = await mqtt.async_subscribe(
+            hass, stat_topic, _message_received, qos=0
+        )
+        config_entry.async_on_unload(unsub_stat)
 
     _LOGGER.info("gPlug MQTT subscribed to: %s", topic)
 
@@ -176,18 +179,18 @@ async def _setup_http_sensors(
 
     entities: dict[str, GPlugSensor] = {}
     url = f"http://{host}/cm?cmnd=Status+10"
+    session = async_get_clientsession(hass, verify_ssl=False)
 
     async def _poll_data(_now=None):
         """Fetch sensor data via HTTP."""
         try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    url, timeout=aiohttp.ClientTimeout(total=10)
-                ) as resp:
-                    if resp.status != 200:
-                        _LOGGER.warning("HTTP %s from gPlug at %s", resp.status, host)
-                        return
-                    data = await resp.json(content_type=None)
+            async with session.get(
+                url, timeout=aiohttp.ClientTimeout(total=10)
+            ) as resp:
+                if resp.status != 200:
+                    _LOGGER.warning("HTTP %s from gPlug at %s", resp.status, host)
+                    return
+                data = await resp.json(content_type=None)
         except Exception as exc:
             _LOGGER.error("Error polling gPlug at %s: %s", host, exc)
             return
@@ -230,11 +233,12 @@ async def _setup_http_sensors(
         if new_entities:
             async_add_entities(new_entities)
 
-    # Initial poll
     await _poll_data()
 
-    # Schedule periodic polling
-    async_track_time_interval(hass, _poll_data, timedelta(seconds=interval))
+    unsub_poll = async_track_time_interval(
+        hass, _poll_data, timedelta(seconds=interval)
+    )
+    config_entry.async_on_unload(unsub_poll)
 
 
 def _extract_sensor_data(payload: dict) -> dict[str, Any]:
