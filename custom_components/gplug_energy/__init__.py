@@ -113,8 +113,7 @@ async def _add_lovelace_resource(hass: HomeAssistant, url: str) -> None:
         ll_data = hass.data.get("lovelace")
         if ll_data is None or not hasattr(ll_data, "resources"):
             _LOGGER.debug(
-                "Lovelace resources not available (YAML mode?). "
-                "Add manually: %s",
+                "Lovelace resources not available (YAML mode?). Add manually: %s",
                 url,
             )
             return
