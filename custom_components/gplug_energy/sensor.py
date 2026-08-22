@@ -8,7 +8,6 @@ from datetime import timedelta
 from typing import Any
 
 import aiohttp
-
 from homeassistant.components import mqtt
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -191,7 +190,7 @@ async def _setup_http_sensors(
                     _LOGGER.warning("HTTP %s from gPlug at %s", resp.status, host)
                     return
                 data = await resp.json(content_type=None)
-        except Exception as exc:
+        except (aiohttp.ClientError, TimeoutError, ValueError) as exc:
             _LOGGER.error("Error polling gPlug at %s: %s", host, exc)
             return
 
@@ -362,9 +361,7 @@ class GPlugSensor(SensorEntity):
             self._attr_native_unit_of_measurement = unit
 
         # Suggested display precision
-        if dc == "energy":
-            self._attr_suggested_display_precision = 3
-        elif dc == "power":
+        if dc == "energy" or dc == "power":
             self._attr_suggested_display_precision = 3
         elif dc in ("voltage", "current"):
             self._attr_suggested_display_precision = 1

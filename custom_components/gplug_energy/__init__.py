@@ -99,7 +99,7 @@ async def _register_card(hass: HomeAssistant) -> None:
                 CARD_STATIC_URL, str(CARD_PATH), cache_headers=True
             )
         _LOGGER.info("gPlug card served at %s", CARD_STATIC_URL)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — private HA API, must never break setup
         _LOGGER.warning("Could not serve card file: %s", exc)
         return
 
@@ -135,7 +135,7 @@ async def _add_lovelace_resource(hass: HomeAssistant, url: str) -> None:
         await resources.async_create_item({"res_type": "module", "url": url})
         _LOGGER.info("gPlug card registered in lovelace_resources: %s", url)
 
-    except Exception:
+    except Exception:  # noqa: BLE001 — private HA API, must never break setup
         _LOGGER.debug(
             "Could not auto-register Lovelace resource. "
             "Add manually: Settings > Dashboards > Resources > "

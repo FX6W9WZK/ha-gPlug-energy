@@ -41,7 +41,7 @@ async def async_configure_energy_dashboard(
     try:
         manager = await async_get_manager(hass)
         prefs = manager.data
-    except Exception:
+    except Exception:  # noqa: BLE001 — private HA API, must never break setup
         _LOGGER.debug("Could not access energy manager, skipping auto-config")
         return
 
@@ -112,7 +112,7 @@ async def async_configure_energy_dashboard(
             len(new_sources),
             [s["stat_energy_from"] for s in new_sources],
         )
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — private HA API, must never break setup
         _LOGGER.warning("Could not auto-configure Energy Dashboard: %s", exc)
 
 
