@@ -1,5 +1,5 @@
 {
   "name": "gPlug Energy (Smart Meter)",
-  "homeassistant": "2024.1.0",
+  "homeassistant": "2026.3.0",
   "render_readme": true
 }
