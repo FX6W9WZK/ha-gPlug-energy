@@ -1,6 +1,7 @@
 # gPlug Energy – Home Assistant Integration (HACS)
 
 [![HACS Badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
+[![Quality Scale](https://img.shields.io/badge/Quality_Scale-Silver-c0c0c0.svg)](https://developers.home-assistant.io/docs/core/integration-quality-scale/)
 [![Validate](https://github.com/FX6W9WZK/ha-gPlug-energy/actions/workflows/validate.yml/badge.svg)](https://github.com/FX6W9WZK/ha-gPlug-energy/actions)
 [![GitHub Release](https://img.shields.io/github/v/release/FX6W9WZK/ha-gPlug-energy)](https://github.com/FX6W9WZK/ha-gPlug-energy/releases)
 [![License: MIT](https://img.shields.io/github/license/FX6W9WZK/ha-gPlug-energy?color=yellow)](https://github.com/FX6W9WZK/ha-gPlug-energy/blob/main/LICENSE)
