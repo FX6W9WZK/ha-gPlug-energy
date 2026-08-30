@@ -445,3 +445,55 @@ def test_detect_model(topic: str, name: str, model: str) -> None:
         data={CONF_MQTT_TOPIC: topic, CONF_DEVICE_NAME: name},
     )
     assert _detect_model(entry) == model
+
+
+async def test_mqtt_unknown_keys_with_obis_codes_get_full_sensors(
+    hass: HomeAssistant, mqtt_mock
+) -> None:
+    """Foreign meter-script key names with embedded OBIS codes map to canonical sensors."""
+    entry = await _setup_mqtt_entry(hass)
+
+    payload = {
+        "EWB_METER": {
+            "Bezug_1.8.0": 1500.25,
+            "Einspeisung_2.8.0": 320.5,
+            "Leistung_1.7.0": 2.5,
+        }
+    }
+    async_fire_mqtt_message(hass, TOPIC, json.dumps(payload))
+    await hass.async_block_till_done()
+
+    energy_id = _entity_id(hass, entry, "Ei_1.8")
+    assert energy_id is not None
+    state = hass.states.get(energy_id)
+    assert state.state == "1500.25"
+    assert state.attributes["device_class"] == "energy"
+    assert state.attributes["state_class"] == "total_increasing"
+    assert state.attributes["obis_key"] == "Bezug_1.8.0"
+
+    export = hass.states.get(_entity_id(hass, entry, "Eo_2.8"))
+    assert export.attributes["device_class"] == "energy"
+
+    power = hass.states.get(_entity_id(hass, entry, "Pi_1.7"))
+    assert power.attributes["device_class"] == "power"
+
+
+async def test_http_unknown_keys_with_obis_codes_get_full_sensors(
+    hass: HomeAssistant, mqtt_mock, aioclient_mock
+) -> None:
+    """OBIS detection also applies on the HTTP polling path."""
+    aioclient_mock.get(
+        HTTP_URL,
+        json={"StatusSNS": {"FREMD": {"Bezug_1.8.0": 42.5, "u1_32.7": 230.1}}},
+    )
+    entry = await _setup_http_entry(hass)
+
+    energy_id = _entity_id(hass, entry, "Ei_1.8")
+    assert energy_id is not None
+    state = hass.states.get(energy_id)
+    assert state.state == "42.5"
+    assert state.attributes["device_class"] == "energy"
+    assert state.attributes["obis_key"] == "Bezug_1.8.0"
+
+    voltage = hass.states.get(_entity_id(hass, entry, "V1_32.7"))
+    assert voltage.attributes["device_class"] == "voltage"

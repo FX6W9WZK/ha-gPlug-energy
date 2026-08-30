@@ -5,6 +5,10 @@ Alle relevanten Änderungen an der gPlug Energy Integration werden in dieser Dat
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/)
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## 1.4.0
+- **Automatische OBIS-Erkennung**: Unbekannte Schlüsselnamen aus zählerspezifischen gPlug-Skripten (z. B. `Bezug_1.8.0`, `1-0:2.8.1`) werden anhand des enthaltenen OBIS-Codes automatisch den kanonischen Sensoren zugeordnet — mit korrekten Device-Classes und Energy-Dashboard-Anbindung, unabhängig vom Netzbetreiber (MQTT- und HTTP-Pfad)
+- README: Abschnitt zur Netzbetreiber-Kompatibilität
+
 ## 1.3.0
 - **Quality Scale: Silber**
   - Vollständige Testsuite: 67 Tests, 100 % Coverage über alle Module (Config Flow, MQTT-/HTTP-Sensorik, Energy-Dashboard-Automatik, Diagnostics), in der CI mit ≥95 % erzwungen

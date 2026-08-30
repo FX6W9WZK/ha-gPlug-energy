@@ -79,6 +79,10 @@ Ordner `custom_components/gplug_energy/` nach `<config>/custom_components/` kopi
 
 Über **Konfigurieren** an der Integration lassen sich später die automatische Energie-Dashboard-Einrichtung, die automatische Karten-Registrierung und (bei HTTP) das Abfrageintervall anpassen.
 
+### Kompatibilität mit anderen Netzbetreibern
+
+Die Integration ist nicht auf einen bestimmten Netzbetreiber festgelegt — sie verarbeitet, was das zählerspezifische gPlug-Tasmota-Skript publiziert. Bekannte Schlüsselschemata (OBIS-Notation wie `Ei_1.8`, Klartext-Aliasse wie `Total_in`) werden direkt zugeordnet. Unbekannte Schlüssel, die einen OBIS-Code enthalten (z. B. `Bezug_1.8.0`, `1-0:2.8.1`), erkennt die Integration automatisch und legt vollwertige Sensoren inklusive Energie-Dashboard-Anbindung an. Nur Schlüssel ganz ohne OBIS-Code landen als generische Sensoren ohne Energie-Klasse — falls das bei deinem Zähler passiert, bitte ein Issue mit der MQTT-Payload eröffnen, dann ergänzen wir das Mapping.
+
 ### Integration entfernen
 
 1. **Einstellungen → Geräte & Dienste → gPlug Energy**

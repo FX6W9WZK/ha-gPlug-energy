@@ -1,5 +1,7 @@
 """Constants for the gPlug Energy integration."""
 
+import re
+
 DOMAIN = "gplug_energy"
 MANUFACTURER = "Gantrisch Energie AG"
 
@@ -297,3 +299,35 @@ SENSOR_SKIP_KEYS = {"SMid", "Time"}
 
 # Known JSON prefixes used by gPlug Tasmota scripts
 KNOWN_JSON_PREFIXES = ["ENERGY", "SML", "P1", "DSMR", "HDLC", "z"]
+
+
+# ── OBIS heuristic for unknown keys ──────────────────────────────────────
+# Meter-specific gPlug Tasmota scripts name their variables freely, but the
+# OBIS code is almost always embedded in the key (e.g. "Bezug_1.8.0",
+# "1-0:2.8.1", "Leistung_1.7"). Detect those fragments and map the key to
+# the canonical sensor so it gets full device classes and works with the
+# Energy Dashboard auto-configuration.
+_OBIS_PATTERNS = [
+    (re.compile(r"(?<![\d.])1\.8\.1(?![\d.])"), "Ei1_1.8.1"),
+    (re.compile(r"(?<![\d.])1\.8\.2(?![\d.])"), "Ei2_1.8.2"),
+    (re.compile(r"(?<![\d.])2\.8\.1(?![\d.])"), "Eo1_2.8.1"),
+    (re.compile(r"(?<![\d.])2\.8\.2(?![\d.])"), "Eo2_2.8.2"),
+    (re.compile(r"(?<![\d.])1\.8(\.0)?(?![\d.])"), "Ei_1.8"),
+    (re.compile(r"(?<![\d.])2\.8(\.0)?(?![\d.])"), "Eo_2.8"),
+    (re.compile(r"(?<![\d.])1\.7(\.0)?(?![\d.])"), "Pi_1.7"),
+    (re.compile(r"(?<![\d.])2\.7(\.0)?(?![\d.])"), "Po_2.7"),
+    (re.compile(r"(?<![\d.])32\.7(\.0)?(?![\d.])"), "V1_32.7"),
+    (re.compile(r"(?<![\d.])52\.7(\.0)?(?![\d.])"), "V2_52.7"),
+    (re.compile(r"(?<![\d.])72\.7(\.0)?(?![\d.])"), "V3_72.7"),
+    (re.compile(r"(?<![\d.])31\.7(\.0)?(?![\d.])"), "I1_31.7"),
+    (re.compile(r"(?<![\d.])51\.7(\.0)?(?![\d.])"), "I2_51.7"),
+    (re.compile(r"(?<![\d.])71\.7(\.0)?(?![\d.])"), "I3_71.7"),
+]
+
+
+def detect_obis_key(key: str) -> str | None:
+    """Map a key containing an OBIS code fragment to its canonical sensor key."""
+    for pattern, canonical in _OBIS_PATTERNS:
+        if pattern.search(key):
+            return canonical
+    return None

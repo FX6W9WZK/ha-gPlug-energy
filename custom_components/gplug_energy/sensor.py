@@ -41,6 +41,7 @@ from .const import (
     MANUFACTURER,
     MODEL_DETECT_PATTERNS,
     SENSOR_KEY_ALIASES,
+    detect_obis_key,
     SENSOR_SKIP_KEYS,
     SENSOR_TYPES_ENERGY,
 )
@@ -129,6 +130,11 @@ async def _setup_mqtt_sensors(
             canonical_key = SENSOR_KEY_ALIASES.get(key, key)
             sensor_config = SENSOR_TYPES_ENERGY.get(canonical_key)
 
+            if sensor_config is None and (obis := detect_obis_key(key)):
+                # Key from an unknown meter script, but it embeds an OBIS code
+                canonical_key = obis
+                sensor_config = SENSOR_TYPES_ENERGY[obis]
+
             if sensor_config is None:
                 # Unknown key – create a generic sensor
                 sensor_config = _make_generic_sensor_config(key, value)
@@ -211,6 +217,11 @@ async def _setup_http_sensors(
 
             canonical_key = SENSOR_KEY_ALIASES.get(key, key)
             sensor_config = SENSOR_TYPES_ENERGY.get(canonical_key)
+
+            if sensor_config is None and (obis := detect_obis_key(key)):
+                # Key from an unknown meter script, but it embeds an OBIS code
+                canonical_key = obis
+                sensor_config = SENSOR_TYPES_ENERGY[obis]
 
             if sensor_config is None:
                 sensor_config = _make_generic_sensor_config(key, value)
