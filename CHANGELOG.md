@@ -5,6 +5,13 @@ Alle relevanten Änderungen an der gPlug Energy Integration werden in dieser Dat
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/)
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## 1.3.0
+- **Quality Scale: Silber**
+  - Vollständige Testsuite: 67 Tests, 100 % Coverage über alle Module (Config Flow, MQTT-/HTTP-Sensorik, Energy-Dashboard-Automatik, Diagnostics), in der CI mit ≥95 % erzwungen
+  - `PARALLEL_UPDATES` deklariert, `data_description`-Texte für alle Formularfelder (de/en/fr/it)
+  - README: Parameter-Tabelle und Entfernen-Anleitung
+- **Fix**: Nicht-numerische Messwerte (z. B. "n/a" vom Zähler) werden als unbekannt gemeldet statt numerische Sensoren beim State-Write crashen zu lassen
+
 ## [1.1.1] – 2026-03-26
 
 ### Hinzugefügt

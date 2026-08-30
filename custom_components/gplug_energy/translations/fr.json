@@ -6,6 +6,9 @@
         "description": "Choisissez le type de connexion pour votre appareil gPlug.",
         "data": {
           "connection_type": "Type de connexion"
+        },
+        "data_description": {
+          "connection_type": "MQTT (push, recommandé) ou interrogation HTTP."
         }
       },
       "mqtt": {
@@ -14,6 +17,10 @@
         "data": {
           "device_name": "Nom de l'appareil",
           "mqtt_topic": "Topic MQTT du capteur"
+        },
+        "data_description": {
+          "device_name": "Nom de l'appareil et de ses entités dans Home Assistant.",
+          "mqtt_topic": "Topic Tasmota du gPlug, p. ex. tele/gplug/SENSOR (voir l'interface web du gPlug, réglages MQTT)."
         }
       },
       "http": {
@@ -23,6 +30,11 @@
           "device_name": "Nom de l'appareil",
           "http_host": "Adresse IP / nom d'hote",
           "polling_interval": "Intervalle d'interrogation"
+        },
+        "data_description": {
+          "device_name": "Nom de l'appareil et de ses entités dans Home Assistant.",
+          "http_host": "Adresse IP ou nom d'hôte du gPlug pour l'interrogation HTTP.",
+          "polling_interval": "Intervalle d'interrogation HTTP en secondes."
         }
       }
     },

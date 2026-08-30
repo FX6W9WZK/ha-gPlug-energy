@@ -47,6 +47,9 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
+# Read-only integration: MQTT push / coordinator-style HTTP polling.
+PARALLEL_UPDATES = 0
+
 # Map string device_class to HA enum
 DEVICE_CLASS_MAP = {
     "energy": SensorDeviceClass.ENERGY,
@@ -374,7 +377,10 @@ class GPlugSensor(SensorEntity):
         try:
             self._attr_native_value = round(float(value), 4)
         except (ValueError, TypeError):
-            self._attr_native_value = value
+            # Meters occasionally report non-numeric placeholders such as
+            # "n/a". Writing those to a sensor with a numeric device class
+            # raises in HA, so report the value as unknown instead.
+            self._attr_native_value = None
 
         if self.hass and self.entity_id:
             self.async_write_ha_state()

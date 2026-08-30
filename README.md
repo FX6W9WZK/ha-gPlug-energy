@@ -66,6 +66,26 @@ Ordner `custom_components/gplug_energy/` nach `<config>/custom_components/` kopi
 
 ## Einrichtung
 
+### Parameter
+
+| Parameter | Pflicht | Standard | Beschreibung |
+|---|---|---|---|
+| Verbindungstyp | ja | MQTT | MQTT (Push, empfohlen) oder HTTP-Polling |
+| Gerätename | nein | `gPlug` | Name des Geräts und seiner Entitäten |
+| MQTT-Topic | bei MQTT | `tele/gplug/SENSOR` | Tasmota-Topic des gPlug |
+| Host | bei HTTP | – | IP-Adresse oder Hostname für HTTP-Polling |
+| Abfrageintervall | nein | `30 s` | Nur bei HTTP-Polling |
+
+Über **Konfigurieren** an der Integration lassen sich später die automatische Energie-Dashboard-Einrichtung, die automatische Karten-Registrierung und (bei HTTP) das Abfrageintervall anpassen.
+
+### Integration entfernen
+
+1. **Einstellungen → Geräte & Dienste → gPlug Energy**
+2. Drei-Punkte-Menü des Eintrags → **Löschen**
+3. Home Assistant neu starten
+
+Geräte und Entitäten werden automatisch entfernt; die Dateien anschließend bei Bedarf über HACS deinstallieren.
+
 ### Voraussetzung
 
 Der gPlug (egal welches Modell) muss per MQTT mit einem Broker verbunden sein (z.B. Mosquitto). Konfiguration über die gPlug Web-UI: **Einstellungen → MQTT**.

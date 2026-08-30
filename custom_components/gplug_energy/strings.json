@@ -6,6 +6,9 @@
         "description": "Choose how to connect to your gPlug device.",
         "data": {
           "connection_type": "Connection type"
+        },
+        "data_description": {
+          "connection_type": "MQTT (push, recommended) or HTTP polling."
         }
       },
       "mqtt": {
@@ -14,6 +17,10 @@
         "data": {
           "device_name": "Device name",
           "mqtt_topic": "MQTT sensor topic"
+        },
+        "data_description": {
+          "device_name": "Name used for the device and its entities in Home Assistant.",
+          "mqtt_topic": "Tasmota topic of the gPlug, e.g. tele/gplug/SENSOR (see gPlug web UI, MQTT settings)."
         }
       },
       "http": {
@@ -23,6 +30,11 @@
           "device_name": "Device name",
           "http_host": "IP address / hostname",
           "polling_interval": "Polling interval"
+        },
+        "data_description": {
+          "device_name": "Name used for the device and its entities in Home Assistant.",
+          "http_host": "IP address or hostname of the gPlug for HTTP polling.",
+          "polling_interval": "How often to poll the gPlug over HTTP, in seconds."
         }
       }
     },
