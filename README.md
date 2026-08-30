@@ -1,6 +1,6 @@
 # gPlug Energy – Home Assistant Integration (HACS)
 
-[![HACS Badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz)
+[![HACS Badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
 [![Validate](https://github.com/FX6W9WZK/ha-gPlug-energy/actions/workflows/validate.yml/badge.svg)](https://github.com/FX6W9WZK/ha-gPlug-energy/actions)
 [![GitHub Release](https://img.shields.io/github/v/release/FX6W9WZK/ha-gPlug-energy)](https://github.com/FX6W9WZK/ha-gPlug-energy/releases)
 [![License: MIT](https://img.shields.io/github/license/FX6W9WZK/ha-gPlug-energy?color=yellow)](https://github.com/FX6W9WZK/ha-gPlug-energy/blob/main/LICENSE)
@@ -52,10 +52,11 @@ Die Lovelace-Karte zeigt Echtzeit-Bezug/Einspeisung, HT/NT-Zählerstände und 3-
 
 ### HACS (empfohlen)
 
-1. **HACS** öffnen → **⋮** (oben rechts) → **Benutzerdefinierte Repositories**
-2. URL: `https://github.com/FX6W9WZK/ha-gPlug-energy` · Kategorie: **Integration**
-3. **gPlug Energy** suchen → **Herunterladen**
-4. Home Assistant **neu starten**
+gPlug Energy ist Teil der HACS-Default-Repositories:
+
+1. **HACS** öffnen
+2. **gPlug Energy** suchen → **Herunterladen**
+3. Home Assistant **neu starten**
 
 ### Manuell
 
