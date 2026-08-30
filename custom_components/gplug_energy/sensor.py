@@ -41,9 +41,9 @@ from .const import (
     MANUFACTURER,
     MODEL_DETECT_PATTERNS,
     SENSOR_KEY_ALIASES,
-    detect_obis_key,
     SENSOR_SKIP_KEYS,
     SENSOR_TYPES_ENERGY,
+    detect_obis_key,
 )
 
 _LOGGER = logging.getLogger(__name__)
