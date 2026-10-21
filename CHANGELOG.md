@@ -5,6 +5,10 @@ Alle relevanten Änderungen an der gPlug Energy Integration werden in dieser Dat
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/)
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## 1.4.1
+- Gegen HA 2026.10.2 verifiziert (alle 71 Tests gruen)
+- Neuer Manifest-Key `categories` (`energy.meters_monitoring`)
+
 ## 1.4.0
 - **Automatische OBIS-Erkennung**: Unbekannte Schlüsselnamen aus zählerspezifischen gPlug-Skripten (z. B. `Bezug_1.8.0`, `1-0:2.8.1`) werden anhand des enthaltenen OBIS-Codes automatisch den kanonischen Sensoren zugeordnet — mit korrekten Device-Classes und Energy-Dashboard-Anbindung, unabhängig vom Netzbetreiber (MQTT- und HTTP-Pfad)
 - README: Abschnitt zur Netzbetreiber-Kompatibilität
