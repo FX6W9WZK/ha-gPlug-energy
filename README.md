@@ -1,6 +1,6 @@
-# gPlug Energy – Home Assistant Integration (HACS)
+# gPlug Energy – Home Assistant Integration
 
-[![HACS Badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
+[![Marketplace](https://img.shields.io/badge/HA_Marketplace-Catalog-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
 [![Quality Scale](https://img.shields.io/badge/Quality_Scale-Silver-c0c0c0.svg)](https://developers.home-assistant.io/docs/core/integration-quality-scale/)
 [![Validate](https://github.com/FX6W9WZK/ha-gPlug-energy/actions/workflows/validate.yml/badge.svg)](https://github.com/FX6W9WZK/ha-gPlug-energy/actions)
 [![GitHub Release](https://img.shields.io/github/v/release/FX6W9WZK/ha-gPlug-energy)](https://github.com/FX6W9WZK/ha-gPlug-energy/releases)
@@ -51,11 +51,11 @@ Die Lovelace-Karte zeigt Echtzeit-Bezug/Einspeisung, HT/NT-Zählerstände und 3-
 
 ## Installation
 
-### HACS (empfohlen)
+### Marketplace (empfohlen)
 
-gPlug Energy ist Teil der HACS-Default-Repositories:
+gPlug Energy ist Teil des Marketplace-Katalogs (Home Assistant 2026.11+; auf älteren Versionen weiterhin via HACS):
 
-1. **HACS** öffnen
+1. **Einstellungen → Marketplace** öffnen
 2. **gPlug Energy** suchen → **Herunterladen**
 3. Home Assistant **neu starten**
 
@@ -89,7 +89,7 @@ Die Integration ist nicht auf einen bestimmten Netzbetreiber festgelegt — sie 
 2. Drei-Punkte-Menü des Eintrags → **Löschen**
 3. Home Assistant neu starten
 
-Geräte und Entitäten werden automatisch entfernt; die Dateien anschließend bei Bedarf über HACS deinstallieren.
+Geräte und Entitäten werden automatisch entfernt; die Dateien anschließend bei Bedarf über den Marketplace deinstallieren.
 
 ### Voraussetzung
 
