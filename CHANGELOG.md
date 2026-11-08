@@ -5,6 +5,10 @@ Alle relevanten Änderungen an der gPlug Energy Integration werden in dieser Dat
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.1.0/)
 und dieses Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## 1.4.2
+- Marketplace-Release: README auf den Home Assistant Marketplace umgestellt (ersetzt HACS seit HA 2026.11), Manifest-Key `categories` ergaenzt
+- Gegen HA 2026.11.0 verifiziert (alle Tests gruen) — keine funktionalen Aenderungen
+
 ## 1.4.1
 - Gegen HA 2026.10.2 verifiziert (alle 71 Tests gruen)
 
