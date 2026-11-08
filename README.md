@@ -53,7 +53,7 @@ Die Lovelace-Karte zeigt Echtzeit-Bezug/Einspeisung, HT/NT-Zählerstände und 3-
 
 ### Marketplace (empfohlen)
 
-gPlug Energy ist Teil des Marketplace-Katalogs (Home Assistant 2026.11+; auf älteren Versionen weiterhin via HACS):
+gPlug Energy ist Teil des Marketplace-Katalogs (Home Assistant 2026.11+):
 
 1. **Einstellungen → Marketplace** öffnen
 2. **gPlug Energy** suchen → **Herunterladen**
